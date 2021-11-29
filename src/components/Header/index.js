@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { LightMode, DarkMode } from "@mui/icons-material";
-import { useTheme, useThemeUpdate } from "../ThemeContext";
+import { useTheme, useThemeUpdate } from "../../contexts/ThemeContext";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/system";
 

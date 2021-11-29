@@ -4,9 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Sitemap } from "./components/Sitemap";
-import Homepage from "./components/Homepage";
-import { NotFound } from "./components/NotFound";
+import { Sitemap } from "./pages/Sitemap";
+import Homepage from "./pages/Homepage";
+import { NotFound } from "./pages/NotFound";
 
 ReactDOM.render(
   <BrowserRouter>

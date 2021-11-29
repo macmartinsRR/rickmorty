@@ -7,13 +7,15 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const useStyles = (status, darkTheme) =>
   makeStyles({
     card: {
       display: "flex",
-      backgroundColor: darkTheme ? "#181818 !important" : "lightGray !important",
+      backgroundColor: darkTheme
+        ? "#181818 !important"
+        : "lightGray !important",
       color: darkTheme ? "white !important" : "black",
     },
     dot: {
@@ -43,7 +45,7 @@ function Character({
   species,
   location,
   origin,
-  handleSelectCard
+  handleSelectCard,
 }) {
   const darkTheme = useTheme();
   const classes = useStyles(status, darkTheme)();

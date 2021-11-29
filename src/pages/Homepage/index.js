@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress, Grid, Pagination } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Character from "../Character";
-import CharacterModal from "../CharacterModal";
-import { useTheme } from "../ThemeContext";
+import Character from "../../components/Character";
+import CharacterModal from "../../components/CharacterModal";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useToggle } from "../../hooks";
 import { changeWindowTitle } from "../../utils";
+import { fetchCharacters } from "../../api";
 import config from "../../config.json";
 
 const useStyles = (darkTheme) =>
@@ -50,11 +51,13 @@ export function Homepage() {
     setIsLoading(true);
 
     (async () => {
-      const rmRes = await fetch(`${config.apiURL}?page=${page}`);
-
-      const data = await rmRes.json();
-      setCharacters(data.results);
-      setCharacterCount(data.info.count);
+      try {
+        const data = await fetchCharacters(page);
+        setCharacters(data.results);
+        setCharacterCount(data.info.count);
+      } catch (err) {
+        alert(err.message);
+      }
       setIsLoading(false);
     })();
   }, [page]);

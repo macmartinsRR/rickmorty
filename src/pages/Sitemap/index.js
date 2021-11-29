@@ -2,7 +2,7 @@ import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { changeWindowTitle } from "../../utils";
 
 const useStyles = (darkTheme) =>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "./components/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import { Header } from "./components/Header";

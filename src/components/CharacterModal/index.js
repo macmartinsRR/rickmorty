@@ -1,5 +1,5 @@
 import { Fade, Modal, Typography } from "@mui/material";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = (darkTheme) =>
