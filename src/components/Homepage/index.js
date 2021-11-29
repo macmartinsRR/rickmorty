@@ -1,30 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { CircularProgress, Grid, Pagination, Typography } from "@mui/material";
+import { CircularProgress, Grid, Pagination } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Character from "../Character";
 import CharacterModal from "../CharacterModal";
-import { useTheme, useThemeUpdate } from "../ThemeContext";
-import { useToggle } from '../../hooks';
-
-const url = "http://localhost:3000/api/character";
-const limit = 10;
+import { useTheme } from "../ThemeContext";
+import { useToggle } from "../../hooks";
+import { changeWindowTitle } from "../../utils";
+import config from "../../config.json";
 
 const useStyles = (darkTheme) =>
   makeStyles({
     container: {
       padding: 10,
-      backgroundColor: darkTheme ? "rgb(36, 40, 47)" : "white",
+      backgroundColor: darkTheme ? config.dtBgColor : config.wtBgColor,
     },
     center: {
       display: "flex",
-      justifyContent: "center",
-    },
-    header: {
-      height: 200,
-      backgroundColor: darkTheme ? "white" : "black",
-      color: darkTheme ? "black" : "white",
-      display: "flex",
-      alignItems: "center",
       justifyContent: "center",
     },
     loadCenter: {
@@ -32,11 +23,11 @@ const useStyles = (darkTheme) =>
       justifyContent: "center",
       alignItems: "center",
     },
+    centerOfScreen: { position: "fixed", left: "50%", bottom: "50%" },
   });
 
 export function Homepage() {
   const darkTheme = useTheme();
-  const toggleTheme = useThemeUpdate();
   const classes = useStyles(darkTheme)();
 
   const [characters, setCharacters] = useState([]);
@@ -55,10 +46,11 @@ export function Homepage() {
   };
 
   useEffect(() => {
+    changeWindowTitle("Homepage");
     setIsLoading(true);
 
     (async () => {
-      const rmRes = await fetch(`${url}?page=${page}`);
+      const rmRes = await fetch(`${config.apiURL}?page=${page}`);
 
       const data = await rmRes.json();
       setCharacters(data.results);
@@ -79,16 +71,8 @@ export function Homepage() {
 
   return (
     <div className={classes.container}>
-      <button onClick={toggleTheme}>
-        Toggle {darkTheme ? "light" : "dark"} mode
-      </button>
-      <div className={classes.header}>
-        <Typography variant="h2" className="bold">
-          Rick and Morty
-        </Typography>
-      </div>
       {isLoading ? (
-        <div style={{ position: "fixed", left: "50%" }}>
+        <div className={classes.centerOfScreen}>
           <CircularProgress />
         </div>
       ) : (
@@ -117,12 +101,12 @@ export function Homepage() {
       {!isLoading && (
         <Pagination
           page={page}
-          count={Math.ceil(characterCount / limit)}
+          count={Math.ceil(characterCount / config.limit)}
           className={classes.center}
           onChange={handlePageChange}
           sx={{
             "& .MuiPaginationItem-root": {
-              color: darkTheme ? "white" : "black",
+              color: darkTheme ? config.dtColor : config.wtColor,
             },
           }}
         />

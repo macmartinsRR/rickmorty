@@ -5,3 +5,11 @@
 .normal {
   font-weight: normal !important;
 }
+
+body {
+  background-color: rgb(36, 40, 47);
+}
+
+ul {
+  list-style-type: none;
+}
