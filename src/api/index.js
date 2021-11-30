@@ -9,6 +9,4 @@ async function fetchCharacters(page) {
   }
 }
 
-module.exports = {
-  fetchCharacters,
-};
+export { fetchCharacters };
