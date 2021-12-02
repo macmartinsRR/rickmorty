@@ -25,6 +25,17 @@ const useStyles = (darkTheme) =>
       alignItems: "center",
     },
     centerOfScreen: { position: "fixed", left: "50%", bottom: "50%" },
+    modal: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: darkTheme ? "#181818" : "lightgray",
+      color: darkTheme ? "white" : "black",
+      border: "2px solid #fff",
+      borderRadius: 5,
+      padding: 4,
+    },
   });
 
 export function Homepage() {
@@ -79,27 +90,29 @@ export function Homepage() {
           <CircularProgress />
         </div>
       ) : (
-        <Grid container spacing={2} p={5}>
-          {characters.map((char) => {
-            return (
-              <Grid item xs={12} md={6} key={char.id}>
-                <Character
-                  id={char.id}
-                  gender={char.gender}
-                  name={char.name}
-                  img={char.image}
-                  species={char.species}
-                  status={char.status}
-                  location={char.location}
-                  origin={char.origin}
-                  type={char.type}
-                  numberOfEpisodes={char.episode.length}
-                  handleSelectCard={handleSelectCard}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <div>
+          <Grid container spacing={2} p={5}>
+            {characters.map((char) => {
+              return (
+                <Grid item xs={12} md={6} key={char.id}>
+                  <Character
+                    id={char.id}
+                    gender={char.gender}
+                    name={char.name}
+                    img={char.image}
+                    species={char.species}
+                    status={char.status}
+                    location={char.location}
+                    origin={char.origin}
+                    type={char.type}
+                    numberOfEpisodes={char.episode.length}
+                    handleSelectCard={handleSelectCard}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
       )}
       {!isLoading && (
         <Pagination
@@ -109,7 +122,7 @@ export function Homepage() {
           onChange={handlePageChange}
           sx={{
             "& .MuiPaginationItem-root": {
-              color: darkTheme ? config.dtColor : config.wtColor,
+              color: darkTheme ? "white" : "black",
             },
           }}
         />

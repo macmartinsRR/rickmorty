@@ -11,6 +11,8 @@ import { LightMode, DarkMode } from "@mui/icons-material";
 import { useTheme, useThemeUpdate } from "../../contexts/ThemeContext";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/system";
+import { useState } from "react";
+import Login from "../Login";
 
 const useStyles = (darkTheme) =>
   makeStyles({
@@ -30,6 +32,8 @@ const useStyles = (darkTheme) =>
   });
 
 export function Header() {
+  const [toggle, setToggle] = useState(false);
+
   const toggleTheme = useThemeUpdate();
   const darkTheme = useTheme();
   const classes = useStyles(darkTheme)();
@@ -63,6 +67,13 @@ export function Header() {
               </Button>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
+              <Button
+                key={"Sitemap"}
+                className={classes.menuButton}
+                onClick={() => setToggle(true)}
+              >
+                Sign Up
+              </Button>
               <IconButton onClick={toggleTheme}>
                 {darkTheme ? (
                   <LightMode style={{ color: "white" }} />
@@ -79,6 +90,9 @@ export function Header() {
           Rick and Morty
         </Typography>
       </div>
+      {toggle && (
+        <Login isOpen={toggle} handleModalClose={() => setToggle(false)} />
+      )}
     </div>
   );
 }
