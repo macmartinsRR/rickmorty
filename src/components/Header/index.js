@@ -12,7 +12,9 @@ import { useTheme, useThemeUpdate } from "../../contexts/ThemeContext";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import SignUp from "../SignUp";
 import Login from "../Login";
+import { useLogin } from "../../contexts/LoginContext";
 
 const useStyles = (darkTheme) =>
   makeStyles({
@@ -32,10 +34,13 @@ const useStyles = (darkTheme) =>
   });
 
 export function Header() {
-  const [toggle, setToggle] = useState(false);
+  const [toggleSignUp, setToggleSignUp] = useState(false);
+  const [toggleLogin, setToggleLogin] = useState(false);
 
   const toggleTheme = useThemeUpdate();
   const darkTheme = useTheme();
+
+  const loggedIn = useLogin();
   const classes = useStyles(darkTheme)();
 
   return (
@@ -66,14 +71,25 @@ export function Header() {
                 Sitemap
               </Button>
             </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Button
-                key={"Sitemap"}
-                className={classes.menuButton}
-                onClick={() => setToggle(true)}
-              >
-                Sign Up
-              </Button>
+            <Box display="flex" alignItems="center">
+              {!loggedIn && (
+                <div>
+                  <Button
+                    key={"Sign up"}
+                    className={classes.menuButton}
+                    onClick={() => setToggleSignUp(true)}
+                  >
+                    Sign Up
+                  </Button>
+                  <Button
+                    key={"Login"}
+                    className={classes.menuButton}
+                    onClick={() => setToggleLogin(true)}
+                  >
+                    Login
+                  </Button>
+                </div>
+              )}
               <IconButton onClick={toggleTheme}>
                 {darkTheme ? (
                   <LightMode style={{ color: "white" }} />
@@ -90,8 +106,17 @@ export function Header() {
           Rick and Morty
         </Typography>
       </div>
-      {toggle && (
-        <Login isOpen={toggle} handleModalClose={() => setToggle(false)} />
+      {toggleSignUp && (
+        <SignUp
+          isOpen={toggleSignUp}
+          handleModalClose={() => setToggleSignUp(false)}
+        />
+      )}
+      {toggleLogin && (
+        <Login
+          isOpen={toggleLogin}
+          handleModalClose={() => setToggleLogin(false)}
+        />
       )}
     </div>
   );

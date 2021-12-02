@@ -1,2 +1,4 @@
 import fetchCharacters from "./fetchCharacters";
-export { fetchCharacters };
+import signUp from "./signUp";
+import login from "./login";
+export { fetchCharacters, signUp, login };

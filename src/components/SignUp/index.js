@@ -3,7 +3,7 @@ import { Button, Grid, Modal, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "../../contexts/ThemeContext";
 import CustomTF from "../CustomTF";
-import { login } from "../../api";
+import { signUp } from "../../api";
 import { useLoginUpdate } from "../../contexts/LoginContext";
 
 const useStyles = (darkTheme) =>
@@ -23,7 +23,7 @@ const useStyles = (darkTheme) =>
     textfieldColor: {},
   });
 
-export function Login({ isOpen, handleModalClose }) {
+export function SignUp({ isOpen, handleModalClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -42,8 +42,8 @@ export function Login({ isOpen, handleModalClose }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await login({ username, password });
-      alert("Successfully logged in!");
+      await signUp({ username, password });
+      alert("Successfully created account. You are now logged in!");
       updateLoginStatus(true);
       handleModalClose();
     } catch (err) {
@@ -64,7 +64,7 @@ export function Login({ isOpen, handleModalClose }) {
           className="bold"
           sx={{ p: 3, textAlign: "center" }}
         >
-          Login
+          Sign Up
         </Typography>
         <Grid container direction="column" spacing={1}>
           <Grid item>
@@ -99,4 +99,4 @@ export function Login({ isOpen, handleModalClose }) {
   );
 }
 
-export default Login;
+export default SignUp;
