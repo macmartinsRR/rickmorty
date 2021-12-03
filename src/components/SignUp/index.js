@@ -4,7 +4,6 @@ import { makeStyles } from "@mui/styles";
 import { useTheme } from "../../contexts/ThemeContext";
 import CustomTF from "../CustomTF";
 import { signUp } from "../../api";
-import { useLoginUpdate } from "../../contexts/LoginContext";
 
 const useStyles = (darkTheme) =>
   makeStyles({
@@ -23,12 +22,11 @@ const useStyles = (darkTheme) =>
     textfieldColor: {},
   });
 
-export function SignUp({ isOpen, handleModalClose }) {
+export function SignUp({ isOpen, handleModalClose, handleLogginStatus }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const darkTheme = useTheme();
-  const updateLoginStatus = useLoginUpdate();
   const classes = useStyles(darkTheme)();
 
   const handlePasswordChange = (event) => {
@@ -44,7 +42,7 @@ export function SignUp({ isOpen, handleModalClose }) {
     try {
       await signUp({ username, password });
       alert("Successfully created account. You are now logged in!");
-      updateLoginStatus(true);
+      handleLogginStatus(true);
       handleModalClose();
     } catch (err) {
       alert(err);

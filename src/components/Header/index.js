@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import SignUp from "../SignUp";
 import Login from "../Login";
-import { useLogin } from "../../contexts/LoginContext";
+import { signOut } from "../../api";
 
 const useStyles = (darkTheme) =>
   makeStyles({
@@ -36,12 +36,28 @@ const useStyles = (darkTheme) =>
 export function Header() {
   const [toggleSignUp, setToggleSignUp] = useState(false);
   const [toggleLogin, setToggleLogin] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("loggedIn") === "true"
+  );
 
   const toggleTheme = useThemeUpdate();
   const darkTheme = useTheme();
 
-  const loggedIn = useLogin();
   const classes = useStyles(darkTheme)();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      handleLogginStatus(false);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const handleLogginStatus = (status) => {
+    localStorage.setItem("loggedIn", status);
+    setLoggedIn(status);
+  };
 
   return (
     <div>
@@ -72,7 +88,7 @@ export function Header() {
               </Button>
             </Box>
             <Box display="flex" alignItems="center">
-              {!loggedIn && (
+              {!loggedIn ? (
                 <div>
                   <Button
                     key={"Sign up"}
@@ -89,6 +105,14 @@ export function Header() {
                     Login
                   </Button>
                 </div>
+              ) : (
+                <Button
+                  key={"Sign out"}
+                  className={classes.menuButton}
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </Button>
               )}
               <IconButton onClick={toggleTheme}>
                 {darkTheme ? (
@@ -110,12 +134,14 @@ export function Header() {
         <SignUp
           isOpen={toggleSignUp}
           handleModalClose={() => setToggleSignUp(false)}
+          handleLogginStatus={handleLogginStatus}
         />
       )}
       {toggleLogin && (
         <Login
           isOpen={toggleLogin}
           handleModalClose={() => setToggleLogin(false)}
+          handleLogginStatus={handleLogginStatus}
         />
       )}
     </div>
