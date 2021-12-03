@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Grid, Modal, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "../../contexts/ThemeContext";
 import CustomTF from "../CustomTF";
 import { signUp } from "../../api";
+import { useForm, Controller } from "react-hook-form";
 
 const useStyles = (darkTheme) =>
   makeStyles({
@@ -23,24 +24,13 @@ const useStyles = (darkTheme) =>
   });
 
 export function SignUp({ isOpen, handleModalClose, handleLogginStatus }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
   const darkTheme = useTheme();
   const classes = useStyles(darkTheme)();
+  const { handleSubmit, control } = useForm();
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async (data) => {
     try {
-      await signUp({ username, password });
+      await signUp(data);
       alert("Successfully created account. You are now logged in!");
       handleLogginStatus(true);
       handleModalClose();
@@ -51,12 +41,7 @@ export function SignUp({ isOpen, handleModalClose, handleLogginStatus }) {
 
   return (
     <Modal open={isOpen} onClose={handleModalClose}>
-      <form
-        onSubmit={handleSubmit}
-        autoComplete="off"
-        noValidate
-        className={classes.modal}
-      >
+      <form autoComplete="off" noValidate className={classes.modal}>
         <Typography
           variant="h4"
           className="bold"
@@ -66,20 +51,51 @@ export function SignUp({ isOpen, handleModalClose, handleLogginStatus }) {
         </Typography>
         <Grid container direction="column" spacing={1}>
           <Grid item>
-            <CustomTF
-              value={username}
-              label="Username"
-              fullWidth
-              onChange={handleUsernameChange}
+            <Controller
+              name="username"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <CustomTF
+                  value={value}
+                  label="Username"
+                  fullWidth
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                />
+              )}
+              rules={{ required: "Username required" }}
             />
           </Grid>
           <Grid item>
-            <CustomTF
-              value={password}
-              onChange={handlePasswordChange}
-              label="Password"
-              fullWidth
-              type="password"
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <CustomTF
+                  value={value}
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                />
+              )}
+              rules={{
+                required: "Password required",
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
+                  message:
+                    "Password must have at least 8 characters, 1 letter and 1 number",
+                },
+              }}
             />
           </Grid>
           <Grid item display="flex" justifyContent="center">
@@ -87,6 +103,7 @@ export function SignUp({ isOpen, handleModalClose, handleLogginStatus }) {
               type="submit"
               variant="outlined"
               color={darkTheme ? "primary" : "secondary"}
+              onClick={handleSubmit(onSubmit)}
             >
               Submit
             </Button>

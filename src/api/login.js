@@ -7,7 +7,7 @@ async function login(data) {
     .catch((err) => {
       let message = "";
       if (err.response.status === 401) message = "Invalid username/password";
-      else message = err.response.data;
+      else message = err.response.data.message;
 
       throw new Error(message);
     });

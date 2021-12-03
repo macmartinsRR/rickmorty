@@ -5,6 +5,7 @@ This project was based on the [Rick & Morty application](https://rickandmortyapi
 The project lists some characters from the [Rick & Morty API](https://github.com/macmartinsRR/RickMortyAPI), but can also be swapped to use the public API (Check previous link for refered API).
 
 ## Important libraries used
+
 - Material UI (MUI)
 - React-router
 
@@ -30,3 +31,5 @@ The application will then ran on the localhost (by default port 3000).
 
 Afterwards you can access it by using the following URL, like:
 http://localhost:3001
+
+The application is also available online: https://hungry-liskov-4d08be.netlify.app/
